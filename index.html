@@ -1,13 +1,108 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>National Parks</title>
-    <script src="appkey.js" charset="utf-8"></script>
-    <script defer src="index.js" charset="utf-8"></script>    
-  </head>
-  <body>
-    <h1>National Parks</h1>
 
-  </body>
+<head>
+  <meta charset="utf-8">
+  <title>National Parks</title>
+  <script src="appkey.js" charset="utf-8"></script>
+  <script defer src="index.js" charset="utf-8"></script>
+</head>
+
+<body>
+  <nav>
+    <div id="park-header">
+      <h1>National Park Pal</h1>
+      <h4>Your personal guide to most of the US National Parks</h4>
+    </div>
+    <select name="filter" id="filter-select">
+      <option value="filter-by">Filter by...</option>
+      <option value="filter-state">Sort by State</option>
+      <option value="filter-visited">Show Visited</option>
+      <option value="filter-not-visited">Show Unvisited</option>
+    </select>
+    <form>
+      <label for="statecode">Show by state</label>
+      <input type="text" id="statecode" name="statecode">
+    </form>
+  </nav>
+  <div class="container" id="parks-div">
+    <div class="card" id="park">
+      <div id="title-button">
+        <h2 id="park-name">Yellowstone National Park</h2>
+        <button id="favorite-button">Visited</button>
+      </div>
+      <img id="pic"
+        src="https://www.visitbigsky.com/sites/default/files/styles/scale_1440/public/2021-04/Yellowstone%20Tours.jpg?itok=LkMy29jF"
+        alt="Yellowstone Geyser">
+      <p id="description">Yellowstone features dramatic canyons, alpine rivers, lush forests, hot springs and gushing
+        geysers, including its most famous, Old Faithful.</p>
+    </div>
+    <div class="card" id="park">
+      <div id="title-button">
+        <h2 id="park-name">Yosemite National Park</h2>
+        <button id="favorite-button">Visited</button>
+      </div>
+      <img id="pic"
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Tunnel_View%2C_Yosemite_Valley%2C_Yosemite_NP_-_Diliff.jpg/568px-Tunnel_View%2C_Yosemite_Valley%2C_Yosemite_NP_-_Diliff.jpg"
+        alt="Yosemite Tunnel View">
+      <p id="description">Yosemite is internationally recognized for its granite cliffs, waterfalls, clear streams,
+        giant sequoia groves, lakes, mountains, meadows, glaciers, and biological diversity</p>
+    </div>
+    <div class="card" id="park">
+      <div id="title-button">
+        <h2 id="park-name">Zion National Park</h2>
+        <button id="favorite-button">Visited</button>
+      </div>
+      <img id="pic"
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Zion_angels_landing_view.jpg/568px-Zion_angels_landing_view.jpg"
+        alt="Zion Canyon from Angels Landing at sunset">
+      <p id="description">Zion National Park includes mountains, canyons, buttes, mesas, monoliths, rivers, slot
+        canyons, and natural arches.</p>
+    </div>
+    <div class="card" id="park">
+      <div id="title-button">
+        <h2 id="park-name">Yellowstone National Park</h2>
+        <button id="favorite-button">Visited</button>
+      </div>
+      <img id="pic"
+        src="https://www.visitbigsky.com/sites/default/files/styles/scale_1440/public/2021-04/Yellowstone%20Tours.jpg?itok=LkMy29jF"
+        alt="Yellowstone Geyser">
+      <p id="description">Yellowstone features dramatic canyons, alpine rivers, lush forests, hot springs and gushing
+        geysers, including its most famous, Old Faithful.</p>
+    </div>
+    <div class="card" id="park">
+      <div id="title-button">
+        <h2 id="park-name">Yosemite National Park</h2>
+        <button id="favorite-button">Visited</button>
+      </div>
+      <img id="pic"
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Tunnel_View%2C_Yosemite_Valley%2C_Yosemite_NP_-_Diliff.jpg/568px-Tunnel_View%2C_Yosemite_Valley%2C_Yosemite_NP_-_Diliff.jpg"
+        alt="Yosemite Tunnel View">
+      <p id="description">Yosemite is internationally recognized for its granite cliffs, waterfalls, clear streams,
+        giant sequoia groves, lakes, mountains, meadows, glaciers, and biological diversity</p>
+    </div>
+    <div class="card" id="park">
+      <div id="title-button">
+        <h2 id="park-name">Zion National Park</h2>
+        <button id="favorite-button">Visited</button>
+      </div>
+      <img id="pic"
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Zion_angels_landing_view.jpg/568px-Zion_angels_landing_view.jpg"
+        alt="Zion Canyon from Angels Landing at sunset">
+      <p id="description">Zion National Park includes mountains, canyons, buttes, mesas, monoliths, rivers, slot
+        canyons, and natural arches.</p>
+    </div>
+    <!-- <div class="card" id="park">
+        <h2 id="park-name">Zion National Park</h2>
+        <button id="favorite-button">Favorite</button>
+        <img id="pic"
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Zion_angels_landing_view.jpg/568px-Zion_angels_landing_view.jpg"
+          alt="Zion Canyon from Angels Landing at sunset">
+        <p id="description">Zion National Park includes mountains, canyons, buttes, mesas, monoliths, rivers, slot
+          canyons, and natural arches.</p>
+        <button id="visit-button">Visited!</button>
+      </div> -->
+  </div>
+</body>
+
 </html>
