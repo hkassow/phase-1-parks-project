@@ -44,7 +44,7 @@ function loadParkData() {
             })
             // More work after parks are loaded
             allParks.forEach(park => createPark(park))
-            
+            displayParkDetails(allParks[0]);  // start by displaying details about the first park in our list
         })
 
         .catch(error => alert(`Failed to load parks: ${error.message}`))
