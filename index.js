@@ -20,8 +20,8 @@ function setupVisitForm() {
         detailPark.visited = !!detailPark.visitDate; // will be true/false depending if date was set        
 
         const parkName = e.target.parentElement.querySelector('#detailParkName').textContent
-        const parkCard = locateParkByName(parkName);    
-        const button = parkCard.querySelector('.favorite-button');        
+        const parkCard = locateParkByName(parkName);
+        const button = parkCard.querySelector('.favorite-button');
         button.textContent = detailPark.visited ? 'Visited' : 'Not Visited';
         console.log(`I see a submit.  parkName is ${parkName}. parkCard${parkCard ? '' : ' not'} located.  Will be saving data to db.json`);
     })
@@ -50,7 +50,10 @@ function loadParkData() {
             })
             // More work after parks are loaded
             allParks.forEach(park => createPark(park))
-            displayParkDetails(allParks[0]);  // start by displaying details about the first park in our list
+            console.log(`All parks inside .then: ${allParks.length}`);
+            displayParkDetails(allParks[0]);
+
+
         })
 
         .catch(error => alert(`Failed to load parks: ${error.message}`))
@@ -133,7 +136,7 @@ function locateParkByName(parkName) {
     parkList.forEach(park => {
         if (park.querySelector('.park-name')) {
             if (park.querySelector('.park-name').textContent === parkName) {
-                foundPark =  park;
+                foundPark = park;
             }
 
         }
@@ -141,37 +144,58 @@ function locateParkByName(parkName) {
     return foundPark;
 }
 
+const parkBucket = document.querySelector('.park-cards').children
 function filterByState(stateCode) {
-    const parkList = grabParks()
-    parkList.forEach(park => {
-        //currently using description as practice filtering 
-        //will replace with states once added to htm
+
+    Array.from(parkBucket).forEach(park => {
         //hides all displays that don't include the state code
-        if (!park.children['description'].textContent.includes(stateCode)) {
+        //
+        console.log(park.children[0].children[1].innerHTML)
+        if (!park.children[0].children[1].textContent.includes(stateCode)) {
             park.style.display = "none"
+        } else {
+            park.style.display = ''
         }
     })
 }
-// filterByState('Yellowstone') remove all parks that don't have Yellowstone in their description
-
-
-function hideIf(para = 'Visited') {
-    //no input will hide visited parks
-    //'reset' will display all parks again 
-    //any other input will hide unvisited parks
-    const parkList = grabParks()
-    para = (para === 'Visited') ? para : 'Not Visited'
-    console.log(para)
-    parkList.forEach(park => {
-        if (para === 'reset') {
-            park.style.display = 'block'
-        }
-        if (park.children['title-button'].children['favorite-button'].textContent === para) {
-            park.style.display = "none"
-        } else {
-            console.log('yes')
-            park.style.display = ''
-            delete park.style
-        }
-    })
+const stateFilter = document.querySelector('#state-filter-form')
+stateFilter.addEventListener('submit', e => {
+    e.preventDefault()
+    const statecode = document.querySelector('#statecode').value
+    filterByState(statecode)
+})
+const filterSelect = document.querySelector('select')
+filterSelect.addEventListener('change', e => {
+    e.preventDefault()
+    hideIf(filterSelect.value)
+})
+function hideIf(para) {
+    //filter-visited will show visited parks
+    //filter-not-visited will show unvisited parks
+    //show-all will display all parks again 
+    switch (para) {
+        case 'show-all':
+            Array.from(parkBucket).forEach(park => {
+                park.style.display = ''
+            })
+            break;
+        case 'filter-visited':
+            Array.from(parkBucket).forEach(park => {
+                if (park.children[0].children[2].innerHTML === 'Visited') {
+                    park.style.display = ''
+                } else {
+                    park.style.display = 'none'
+                }
+            })
+            break;
+        case 'filter-not-visited':
+            Array.from(parkBucket).forEach(park => {
+                if (park.children[0].children[2].innerHTML === 'Not Visited') {
+                    park.style.display = ""
+                } else {
+                    park.style.display = 'none'
+                }
+            })
+            break;
+    }
 }
