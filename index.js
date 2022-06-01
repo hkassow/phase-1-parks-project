@@ -19,7 +19,10 @@ function loadParkData() {
                     name: park.fullName,
                     description: park.description, // if needed addslashes(park.description),
                     states: park.states,
-                    image: park.images.length > 0 ? park.images[0].url : ''
+                    image: park.images.length > 0 ? park.images[0].url : '',
+                    comment: '',
+                    visitDate: '',
+                    visited: false
                 }
             })
 
