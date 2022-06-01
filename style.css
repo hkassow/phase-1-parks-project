@@ -72,6 +72,8 @@ select {
 
 .state {
   margin: 19px;
+  max-width: 125px;
+  word-wrap: break-word;
 }
 
 .park-cards {
@@ -104,6 +106,7 @@ button {
 .title-button {
   display: flex;
   justify-content: space-between;
+
 }
 
 .pic {
