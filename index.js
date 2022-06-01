@@ -29,3 +29,28 @@ function loadParkData() {
         })
         .catch(error => alert(`Failed to load parks: ${error.message}`))
 }
+
+
+
+
+
+
+
+
+function grabParks(){
+    //converts html collection to array using spread operator
+    const x = [...document.getElementsByClassName('card')]
+    return x
+}
+function filterByState(stateCode){
+    const parkList = grabParks()
+    parkList.forEach(park => {
+        //currently using description as practice filtering 
+        //will replace with states once added to htm
+        //hides all displays that don't include the state code
+        if (!park.children['description'].textContent.includes(stateCode)){
+            park.style.display = "none"   
+        }
+    })
+}
+// filterByState('Yellowstone') remove all parks that don't have Yellowstone in their description
