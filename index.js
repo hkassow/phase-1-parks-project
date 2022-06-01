@@ -14,7 +14,10 @@ function setupVisitForm() {
     const visitForm = document.querySelector('#form');
     visitForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        console.log("I see a submit");
+        // Save the date and note entered by the user in the park card
+        detailPark.visitDate = e.target.fdate.value;
+        detailPark.comment = e.target.fnotes.value;        
+        console.log(`I see a submit.  visitDate set to ${detailPark.visitDate}`);
     })
 }
 
@@ -41,15 +44,35 @@ function loadParkData() {
             })
             // More work after parks are loaded
             allParks.forEach(park => createPark(park))
-            console.log(`All parks inside .then: ${allParks.length}`);
-
-
-
+            displayParkDetails(allParks[0]);  // start by displaying details about the first park in our list
         })
 
         .catch(error => alert(`Failed to load parks: ${error.message}`))
 }
-let detailPark;
+
+function displayParkDetails(card) {
+        // Get the park details
+        detailPark = card;
+
+        // Get the DOM elements that will display the details
+        const detailPic = document.querySelector('.detail-pic');
+        const detailParkName = document.querySelector('.detail-park-name');
+        const detailParkState = document.querySelector('.detail-state');
+        const detailParkDesc = document.querySelector('.detail-description');
+        const detailVisitDate = document.querySelector('#fdate');
+        const detailVisitNotes = document.querySelector('#fnotes');
+
+        detailPic.src = card.image;
+        detailPic.alt = card.name;
+        detailParkName.textContent = card.name;
+        detailParkState.textContent = card.states;
+        detailParkDesc.textContent = card.description;
+        
+        detailVisitDate.value = card.visitDate;
+        detailVisitNotes.value = card.comment;
+}
+
+let detailPark; // this is the park currently displayed in the detail area
 let parkContainer = document.querySelector('.park-cards')
 function createPark(card) {
 
@@ -80,33 +103,13 @@ function createPark(card) {
 
     let descript = document.createElement('p')
     descript.className = 'description'
-    descript.textContent = card.description
+    descript.textContent = card.description.length > 100 ? card.description.substring(0,97)+'...' : card.description.substring;
     park.appendChild(descript)
 
     // Watch for clicks on the card so it can be displayed in detail
     park.addEventListener('click', (e) => {
         // Park clicked, so display this park's details
-
-        // Get the park details
-        detailPark = card;
-
-        // Get the DOM elements that will display the details
-        const detailPic = document.querySelector('.detail-pic');
-        const detailParkName = document.querySelector('.detail-park-name');
-        const detailParkState = document.querySelector('.detail-state');
-        const detailParkDesc = document.querySelector('.detail-description');
-        const detailVisitDate = document.querySelector('.fdate');
-        const detailVisitNotes = document.querySelector('.fnotes');
-
-        detailPic.src = card.image;
-        detailPic.alt = card.name;
-        detailParkName.textContent = card.name;
-        detailParkState.textContent = card.states;
-        detailParkDesc.textContent = card.description;
-        detailVisitDate.value = card.visitDate;
-        detailVisitNotes.textContent = card.comment;
-
-
+        displayParkDetails(card);        
     })
     parkContainer.appendChild(park)
 }
@@ -116,6 +119,7 @@ function grabParks() {
     const x = [...document.getElementsByClassName('card')]
     return x
 }
+
 function filterByState(stateCode) {
     const parkList = grabParks()
     parkList.forEach(park => {
