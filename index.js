@@ -49,7 +49,7 @@ function loadParkData() {
 
         .catch(error => alert(`Failed to load parks: ${error.message}`))
 }
-
+let detailPark;
 let parkContainer = document.querySelector('.park-cards')
 function createPark(card) {
 
@@ -83,6 +83,31 @@ function createPark(card) {
     descript.textContent = card.description
     park.appendChild(descript)
 
+    // Watch for clicks on the card so it can be displayed in detail
+    park.addEventListener('click', (e) => {
+        // Park clicked, so display this park's details
+
+        // Get the park details
+        detailPark = card;
+
+        // Get the DOM elements that will display the details
+        const detailPic = document.querySelector('.detail-pic');
+        const detailParkName = document.querySelector('.detail-park-name');
+        const detailParkState = document.querySelector('.detail-state');
+        const detailParkDesc = document.querySelector('.detail-description');
+        const detailVisitDate = document.querySelector('.fdate');
+        const detailVisitNotes = document.querySelector('.fnotes');
+
+        detailPic.src = card.image;
+        detailPic.alt = card.name;
+        detailParkName.textContent = card.name;
+        detailParkState.textContent = card.states;
+        detailParkDesc.textContent = card.description;
+        detailVisitDate.value = card.visitDate;
+        detailVisitNotes.textContent = card.comment;
+
+
+    })
     parkContainer.appendChild(park)
 }
 
