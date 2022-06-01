@@ -108,4 +108,3 @@ function hideIf(para = 'Visited'){
             delete park.style
         }
     })
-}
