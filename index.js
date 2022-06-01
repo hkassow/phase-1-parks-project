@@ -54,3 +54,23 @@ function filterByState(stateCode){
     })
 }
 // filterByState('Yellowstone') remove all parks that don't have Yellowstone in their description
+
+
+function hideVisited(){
+    //will hide all parks visited 
+    const parkList = grabParks()
+    parkList.forEach(park => {
+        if (park.children['title-button'].children['favorite-button'].textContent ==='Visited') {
+            park.style.display = "none"
+        }
+    })
+}
+function hideUnvisited(){
+    //will hide all parks not visited 
+    const parkList = grabParks()
+    parkList.forEach(park => {
+        if (park.children['title-button'].children['favorite-button'].textContent ==='Not Visited') {
+            park.style.display = "none"
+        }
+    })
+}
