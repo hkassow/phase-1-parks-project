@@ -14,8 +14,10 @@ function setupVisitForm() {
     const visitForm = document.querySelector('#form');
     visitForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        //detailPark.visitDate = ;
-        console.log("I see a submit and I will be saving to db.json");
+        // Save the date and note entered by the user in the park card
+        detailPark.visitDate = e.target.fdate.value;
+        detailPark.comment = e.target.fnotes.value;        
+        console.log(`I see a submit.  visitDate set to ${detailPark.visitDate}`);
     })
 }
 
@@ -46,6 +48,28 @@ function loadParkData() {
         })
 
         .catch(error => alert(`Failed to load parks: ${error.message}`))
+}
+
+function displayParkDetails(card) {
+        // Get the park details
+        detailPark = card;
+
+        // Get the DOM elements that will display the details
+        const detailPic = document.querySelector('.detail-pic');
+        const detailParkName = document.querySelector('.detail-park-name');
+        const detailParkState = document.querySelector('.detail-state');
+        const detailParkDesc = document.querySelector('.detail-description');
+        const detailVisitDate = document.querySelector('#fdate');
+        const detailVisitNotes = document.querySelector('#fnotes');
+
+        detailPic.src = card.image;
+        detailPic.alt = card.name;
+        detailParkName.textContent = card.name;
+        detailParkState.textContent = card.states;
+        detailParkDesc.textContent = card.description;
+        
+        detailVisitDate.value = card.visitDate;
+        detailVisitNotes.value = card.comment;
 }
 
 let detailPark; // this is the park currently displayed in the detail area
@@ -85,28 +109,7 @@ function createPark(card) {
     // Watch for clicks on the card so it can be displayed in detail
     park.addEventListener('click', (e) => {
         // Park clicked, so display this park's details
-
-        // Get the park details
-        detailPark = card;
-
-        // Get the DOM elements that will display the details
-        const detailPic = document.querySelector('.detail-pic');
-        const detailParkName = document.querySelector('.detail-park-name');
-        const detailParkState = document.querySelector('.detail-state');
-        const detailParkDesc = document.querySelector('.detail-description');
-        const detailVisitDate = document.querySelector('.fdate');
-        const detailVisitNotes = document.querySelector('.fnotes');
-
-        detailPic.src = card.image;
-        detailPic.alt = card.name;
-        detailParkName.textContent = card.name;
-        detailParkState.textContent = card.states;
-        detailParkDesc.textContent = card.description;
-        // Set form details based on contents of the park's DOM elements
-        /*
-        detailVisitDate.value = card.visitDate;
-        detailVisitNotes.textContent = card.comment;
-        */
+        displayParkDetails(card);        
     })
     parkContainer.appendChild(park)
 }
