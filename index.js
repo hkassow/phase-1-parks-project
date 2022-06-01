@@ -14,7 +14,8 @@ function setupVisitForm() {
     const visitForm = document.querySelector('#form');
     visitForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        console.log("I see a submit");
+        //detailPark.visitDate = ;
+        console.log("I see a submit and I will be saving to db.json");
     })
 }
 
@@ -41,15 +42,13 @@ function loadParkData() {
             })
             // More work after parks are loaded
             allParks.forEach(park => createPark(park))
-            console.log(`All parks inside .then: ${allParks.length}`);
-
-
-
+            
         })
 
         .catch(error => alert(`Failed to load parks: ${error.message}`))
 }
-let detailPark;
+
+let detailPark; // this is the park currently displayed in the detail area
 let parkContainer = document.querySelector('.park-cards')
 function createPark(card) {
 
@@ -80,7 +79,7 @@ function createPark(card) {
 
     let descript = document.createElement('p')
     descript.className = 'description'
-    descript.textContent = card.description
+    descript.textContent = card.description.length > 100 ? card.description.substring(0,97)+'...' : card.description.substring;
     park.appendChild(descript)
 
     // Watch for clicks on the card so it can be displayed in detail
@@ -103,10 +102,11 @@ function createPark(card) {
         detailParkName.textContent = card.name;
         detailParkState.textContent = card.states;
         detailParkDesc.textContent = card.description;
+        // Set form details based on contents of the park's DOM elements
+        /*
         detailVisitDate.value = card.visitDate;
         detailVisitNotes.textContent = card.comment;
-
-
+        */
     })
     parkContainer.appendChild(park)
 }
@@ -116,6 +116,7 @@ function grabParks() {
     const x = [...document.getElementsByClassName('card')]
     return x
 }
+
 function filterByState(stateCode) {
     const parkList = grabParks()
     parkList.forEach(park => {
