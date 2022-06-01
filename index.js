@@ -14,7 +14,16 @@ function setupVisitForm() {
     const visitForm = document.querySelector('#form');
     visitForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        console.log("I see a submit");
+        // Save the date and note entered by the user in the park card
+        detailPark.visitDate = e.target.fdate.value;
+        detailPark.comment = e.target.fnotes.value;
+        detailPark.visited = !!detailPark.visitDate; // will be true/false depending if date was set        
+
+        const parkName = e.target.parentElement.querySelector('#detailParkName').textContent
+        const parkCard = locateParkByName(parkName);
+        const button = parkCard.querySelector('.favorite-button');
+        button.textContent = detailPark.visited ? 'Visited' : 'Not Visited';
+        console.log(`I see a submit.  parkName is ${parkName}. parkCard${parkCard ? '' : ' not'} located.  Will be saving data to db.json`);
     })
 }
 
@@ -42,14 +51,37 @@ function loadParkData() {
             // More work after parks are loaded
             allParks.forEach(park => createPark(park))
             console.log(`All parks inside .then: ${allParks.length}`);
-
+            displayParkDetails(allParks[0]);
 
 
         })
 
         .catch(error => alert(`Failed to load parks: ${error.message}`))
 }
-let detailPark;
+
+function displayParkDetails(card) {
+    // Get the park details
+    detailPark = card;
+
+    // Get the DOM elements that will display the details
+    const detailPic = document.querySelector('.detail-pic');
+    const detailParkName = document.querySelector('.detail-park-name');
+    const detailParkState = document.querySelector('.detail-state');
+    const detailParkDesc = document.querySelector('.detail-description');
+    const detailVisitDate = document.querySelector('#fdate');
+    const detailVisitNotes = document.querySelector('#fnotes');
+
+    detailPic.src = card.image;
+    detailPic.alt = card.name;
+    detailParkName.textContent = card.name;
+    detailParkState.textContent = card.states;
+    detailParkDesc.textContent = card.description;
+
+    detailVisitDate.value = card.visitDate;
+    detailVisitNotes.value = card.comment;
+}
+
+let detailPark; // this is the park currently displayed in the detail area
 let parkContainer = document.querySelector('.park-cards')
 function createPark(card) {
 
@@ -67,7 +99,7 @@ function createPark(card) {
     state.className = 'state'
     let btn = document.createElement('button')
     btn.className = 'favorite-button'
-    btn.textContent = 'Not Visited'
+    btn.textContent = card.visited ? 'Visited' : 'Not Visited';
     titleButton.appendChild(parkTitle)
     titleButton.appendChild(state)
     titleButton.appendChild(btn)
@@ -80,40 +112,41 @@ function createPark(card) {
 
     let descript = document.createElement('p')
     descript.className = 'description'
-    descript.textContent = card.description
+    descript.textContent = card.description.length > 100 ? card.description.substring(0, 97) + '...' : card.description.substring;
     park.appendChild(descript)
 
     // Watch for clicks on the card so it can be displayed in detail
     park.addEventListener('click', (e) => {
         // Park clicked, so display this park's details
-
-        // Get the park details
-        detailPark = card;
-
-        // Get the DOM elements that will display the details
-        const detailPic = document.querySelector('.detail-pic');
-        const detailParkName = document.querySelector('.detail-park-name');
-        const detailParkState = document.querySelector('.detail-state');
-        const detailParkDesc = document.querySelector('.detail-description');
-        const detailVisitDate = document.querySelector('.fdate');
-        const detailVisitNotes = document.querySelector('.fnotes');
-
-        detailPic.src = card.image;
-        detailPic.alt = card.name;
-        detailParkName.textContent = card.name;
-        detailParkState.textContent = card.states;
-        detailParkDesc.textContent = card.description;
-        detailVisitDate.value = card.visitDate;
-        detailVisitNotes.textContent = card.comment;
-
-
+        displayParkDetails(card);
     })
     parkContainer.appendChild(park)
 }
 
+function grabParks() {
+    //converts html collection to array using spread operator
+    const x = [...document.getElementsByClassName('card')]
+    return x
+}
+
+// Locate and return the park's card from the full list
+function locateParkByName(parkName) {
+    const parkList = grabParks()
+    let foundPark;
+    parkList.forEach(park => {
+        if (park.querySelector('.park-name')) {
+            if (park.querySelector('.park-name').textContent === parkName) {
+                foundPark = park;
+            }
+
+        }
+    })
+    return foundPark;
+}
+
 const parkBucket = document.querySelector('.park-cards').children
 function filterByState(stateCode) {
-    
+
     Array.from(parkBucket).forEach(park => {
         //hides all displays that don't include the state code
         //
@@ -140,25 +173,26 @@ function hideIf(para) {
     //filter-visited will show visited parks
     //filter-not-visited will show unvisited parks
     //show-all will display all parks again 
-    switch (para){
+    switch (para) {
         case 'show-all':
             Array.from(parkBucket).forEach(park => {
-                    park.style.display = ''})
+                park.style.display = ''
+            })
             break;
         case 'filter-visited':
             Array.from(parkBucket).forEach(park => {
                 if (park.children[0].children[2].innerHTML === 'Visited') {
-                        park.style.display = ''
-                    } else {
-                        park.style.display = 'none'
-                    }
+                    park.style.display = ''
+                } else {
+                    park.style.display = 'none'
+                }
             })
             break;
         case 'filter-not-visited':
             Array.from(parkBucket).forEach(park => {
                 if (park.children[0].children[2].innerHTML === 'Not Visited') {
                     park.style.display = ""
-                    } else {
+                } else {
                     park.style.display = 'none'
                 }
             })
