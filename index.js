@@ -74,7 +74,8 @@ function hideIf(para = 'Visited'){
             park.style.display = "none"
         } else {
             console.log('yes')
-            park.style.display = 'block'
+            park.style.display = ''
+            delete park.style
         }
     })
 }
