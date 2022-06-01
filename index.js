@@ -61,12 +61,20 @@ function filterByState(stateCode){
 
 function hideIf(para = 'Visited'){
     //no input will hide visited parks
-    //any input will hide unvisited parks
+    //'reset' will display all parks again 
+    //any other input will hide unvisited parks
     const parkList = grabParks()
     para = (para === 'Visited')? para: 'Not Visited'
+    console.log(para)
     parkList.forEach(park => {
+        if (para === 'reset') {
+            park.style.display = 'block'
+        }
         if (park.children['title-button'].children['favorite-button'].textContent === para) {
             park.style.display = "none"
+        } else {
+            console.log('yes')
+            park.style.display = 'block'
         }
     })
 }
