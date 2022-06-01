@@ -1,0 +1,64 @@
+body {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  background-color: #D5EEBB;
+  margin: 2rem;
+}
+
+nav {
+  width: 100%;
+}
+
+nav div {
+
+  text-align: center;
+  padding: 5px;
+}
+
+h1 {
+  font-size: 48px;
+}
+
+h4 {
+  font-size: 20px;
+}
+
+select {
+  align-self: right;
+}
+
+#parks-div {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  column-gap: 75px;
+  row-gap: 50px;
+  justify-content: space-evenly;
+  padding-top: 35px;
+}
+
+#park {
+  background-color: #ACDEAA;
+  padding: 5px;
+  max-width: fit-content;
+  height: fit-content;
+  border-radius: 16px;
+  border: 3px solid #444941;
+}
+
+#description {
+  height: 56px;
+}
+
+button {
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+#title-button {
+  display: flex;
+  justify-content: space-between;
+}
+
+#pic {
+  width: 100%;
+  height: 400px;
+}
