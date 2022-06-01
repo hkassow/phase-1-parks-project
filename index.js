@@ -25,8 +25,8 @@ function loadParkData() {
                     visited: false
                 }
             })
-            console.log(createPark(allParks[0]))
             // More work after parks are loaded
+            allParks.forEach(park => createPark(park))
             console.log(`All parks inside .then: ${allParks.length}`);
             
         })
@@ -68,7 +68,6 @@ function createPark(card){
     park.appendChild(descript)
 
     parkContainer.appendChild(park)
-    return park
 }
 
 function grabParks(){
@@ -109,11 +108,3 @@ function hideIf(para = 'Visited'){
             delete park.style
         }
     })
-}
-
-
-
-
-
-
-//insert comment for test run
