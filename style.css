@@ -60,12 +60,13 @@ select {
   align-self: center;
 }
 
+.fdate {
+  border-radius: 8px;
+}
+
 .fnotes {
   height: 180px;
   width: 200px;
-}
-
-.form {
   border-radius: 8px;
 }
 
