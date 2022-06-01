@@ -59,24 +59,18 @@ function filterByState(stateCode){
 // filterByState('Yellowstone') remove all parks that don't have Yellowstone in their description
 
 
-function hideVisited(){
-    //will hide all parks visited 
+function hideIf(para = 'Visited'){
+    //no input will hide visited parks
+    //any input will hide unvisited parks
     const parkList = grabParks()
+    para = (para === 'Visited')? para: 'Not Visited'
     parkList.forEach(park => {
-        if (park.children['title-button'].children['favorite-button'].textContent ==='Visited') {
+        if (park.children['title-button'].children['favorite-button'].textContent === para) {
             park.style.display = "none"
         }
     })
 }
-function hideUnvisited(){
-    //will hide all parks not visited 
-    const parkList = grabParks()
-    parkList.forEach(park => {
-        if (park.children['title-button'].children['favorite-button'].textContent ==='Not Visited') {
-            park.style.display = "none"
-        }
-    })
-}
+
 
 
 
