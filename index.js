@@ -9,6 +9,15 @@ function addslashes(str) {
     return (str + '').replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
 }
 
+function setupVisitForm() {
+    // take action when [submit] selected on form
+    const visitForm = document.querySelector('#form');
+    visitForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        console.log("I see a submit");
+    })
+}
+
 // Retrieve parks data from National Park Service API
 // Map data to retain only the fields we care about, and add the following:
 // - comment    => user entered comment about the park
@@ -30,29 +39,52 @@ function loadParkData() {
                     visited: false
                 }
             })
-
             // More work after parks are loaded
+            allParks.forEach(park => createPark(park))
             console.log(`All parks inside .then: ${allParks.length}`);
 
-            
+
 
         })
+
         .catch(error => alert(`Failed to load parks: ${error.message}`))
 }
 
+let parkContainer = document.querySelector('.park-cards')
+function createPark(card) {
 
-function setupVisitForm() {
-    // take action when [submit] selected on form
-    const visitForm = document.querySelector('#form');
-    visitForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        console.log("I see a submit");
-    })
+    let park = document.createElement('div')
+    park.className = 'card'
+
+    let titleButton = document.createElement('div')
+    titleButton.className = 'title-button'
+
+    let parkTitle = document.createElement('h2')
+    parkTitle.className = 'park-name'
+    parkTitle.textContent = card.name
+    let state = document.createElement('h4')
+    state.textContent = card.states
+    state.className = 'state'
+    let btn = document.createElement('button')
+    btn.className = 'favorite-button'
+    btn.textContent = 'Not Visited'
+    titleButton.appendChild(parkTitle)
+    titleButton.appendChild(state)
+    titleButton.appendChild(btn)
+    park.appendChild(titleButton)
+
+    let selfie = document.createElement('img')
+    selfie.className = 'pic'
+    selfie.src = card.image
+    park.appendChild(selfie)
+
+    let descript = document.createElement('p')
+    descript.className = 'description'
+    descript.textContent = card.description
+    park.appendChild(descript)
+
+    parkContainer.appendChild(park)
 }
-
-
-
-
 
 function grabParks() {
     //converts html collection to array using spread operator
@@ -93,9 +125,3 @@ function hideIf(para = 'Visited') {
         }
     })
 }
-
-
-
-
-
-//insert comment for test run
