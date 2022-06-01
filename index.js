@@ -144,6 +144,7 @@ function hideIf(para) {
         case 'show-all':
             Array.from(parkBucket).forEach(park => {
                     park.style.display = ''})
+            break;
         case 'filter-visited':
             Array.from(parkBucket).forEach(park => {
                 if (park.children[0].children[2].innerHTML === 'Visited') {
@@ -151,7 +152,8 @@ function hideIf(para) {
                     } else {
                         park.style.display = 'none'
                     }
-                })
+            })
+            break;
         case 'filter-not-visited':
             Array.from(parkBucket).forEach(park => {
                 if (park.children[0].children[2].innerHTML === 'Not Visited') {
@@ -160,5 +162,6 @@ function hideIf(para) {
                     park.style.display = 'none'
                 }
             })
+            break;
     }
 }
