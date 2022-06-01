@@ -1,19 +1,24 @@
 const parkListUrl = `https://developer.nps.gov/api/v1/parks?limit=500&api_key=${NPS_api_key}`;
 
 loadParkData();
-
+setupVisitForm();
 
 // Add slashes to quotes within strings to avoid trouble
 // source: https://stackoverflow.com/questions/770523/escaping-strings-in-javascript
-function addslashes( str ) {
+function addslashes(str) {
     return (str + '').replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
 }
 
+// Retrieve parks data from National Park Service API
+// Map data to retain only the fields we care about, and add the following:
+// - comment    => user entered comment about the park
+// - visitDate  => user entered date of visit
+// - visited    => flag to indicate whether user has visited this park
 function loadParkData() {
     fetch(parkListUrl)
         .then(response => response.json())
         .then(parks => {
-            
+
             const allParks = parks.data.map((park) => {
                 return {
                     name: park.fullName,
@@ -28,43 +33,52 @@ function loadParkData() {
 
             // More work after parks are loaded
             console.log(`All parks inside .then: ${allParks.length}`);
+
             
+
         })
         .catch(error => alert(`Failed to load parks: ${error.message}`))
 }
 
 
+function setupVisitForm() {
+    // take action when [submit] selected on form
+    const visitForm = document.querySelector('#form');
+    visitForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        console.log("I see a submit");
+    })
+}
 
 
 
 
 
-
-function grabParks(){
+function grabParks() {
     //converts html collection to array using spread operator
     const x = [...document.getElementsByClassName('card')]
     return x
 }
-function filterByState(stateCode){
+function filterByState(stateCode) {
     const parkList = grabParks()
     parkList.forEach(park => {
         //currently using description as practice filtering 
         //will replace with states once added to htm
         //hides all displays that don't include the state code
-        if (!park.children['description'].textContent.includes(stateCode)){
-            park.style.display = "none"   
+        if (!park.children['description'].textContent.includes(stateCode)) {
+            park.style.display = "none"
         }
     })
 }
 // filterByState('Yellowstone') remove all parks that don't have Yellowstone in their description
 
 
-function hideIf(para = 'Visited'){
+function hideIf(para = 'Visited') {
     //no input will hide visited parks
     //'reset' will display all parks again 
     //any other input will hide unvisited parks
     const parkList = grabParks()
-    para = (para === 'Visited')? para: 'Not Visited'
+    para = (para === 'Visited') ? para : 'Not Visited'
     console.log(para)
     parkList.forEach(park => {
         if (para === 'reset') {
