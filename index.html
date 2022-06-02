@@ -18,15 +18,33 @@
   </nav>
   <div class="park-div">
     <div class="card" id="park-details">
-      <img class="detail-pic"
+    <!--source: https://www.w3schools.com/howto/howto_js_slideshow.asp -->
+      <div class="slideshow-container">
+        <!-- Full-width images with number and caption text -->
+        <div class="detail-pic-div fade">
+          <img src="https://www.nps.gov/common/uploads/structured_data/3C861078-1DD8-B71B-0B774A242EF6A706.jpg" class="detail-pic">
+        </div>
+
+        <div class="detail-pic-div fade">
+          <img src="https://www.nps.gov/common/uploads/structured_data/3C861263-1DD8-B71B-0B71EF9B95F9644F.jpg" class="detail-pic" id="detail-pic2">
+        </div>
+        <!-- Next and previous buttons -->
+        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+      </div>
+      <br>
+      <!-- The dots/circles -->
+      <div style="text-align:center">
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+      </div>
+      <!-- <img class="detail-pic"
         src="https://www.visitbigsky.com/sites/default/files/styles/scale_1440/public/2021-04/Yellowstone%20Tours.jpg?itok=LkMy29jF"
-        alt="Yellowstone Geyser">
+        alt="Yellowstone Geyser"> -->
       <div class="park-name-state-desc">
-        <h2 id="detailParkName" class="detail-park-name">Yellowstone National Park</h2>
-        <h4 class="detail-state">WY</h4>
-        <p class="detail-description">Yellowstone features dramatic canyons, alpine rivers, lush forests, hot springs
-          and gushing
-          geysers, including its most famous, Old Faithful.</p>
+        <h2 id="detailParkName" class="detail-park-name">Abraham Lincoln Birthplace National Historical Park</h2>
+        <h4 class="detail-state">KY</h4>
+        <p class="detail-description">For over a century people from around the world have come to rural Central Kentucky to honor the humble beginnings of our 16th president, Abraham Lincoln. His early life on Kentucky's frontier shaped his character and prepared him to lead the nation through Civil War. The country's first memorial to Lincoln, built with donations from young and old, enshrines the symbolic birthplace cabin.</p>
       </div>
       <form action="" id="form">
         <label for="">Date Visited</label><br>
