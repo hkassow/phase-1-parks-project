@@ -38,30 +38,37 @@ function loadParkData() {
         .then(parks => {
 
             const allParks = parks.data.map((park) => {
+                
                 return {
                     name: park.fullName,
                     description: park.description, // if needed addslashes(park.description),
                     states: park.states,
                     image: park.images.length > 0 ? park.images[0].url : '',
+                    image2: park.images.length > 1 ? park.images[1].url : '',
+                    weather: park.weatherInfo,
                     comment: '',
                     visitDate: '',
-                    visited: false
+                    visited: false,
+                    id: ''
                 }
             })
             // More work after parks are loaded
-            allParks.forEach(park => createCard(park))
-            console.log(`All parks inside .then: ${allParks.length}`);
+            allParks.forEach(park => createCard(park))            
             displayParkDetails(allParks[0]);
-
-
         })
 
         .catch(error => alert(`Failed to load parks: ${error.message}`))
 }
 
 function displayParkDetails(park) {
-    // Get the park details
+    // Get the park details    
     detailPark = park;
+
+    ///////////////////////////////////////////////////////////
+    // This is the addtional data that could be added to the detail card
+    console.log(`Park weather is ${park.weather}`);
+    console.log(`Park additional image is ${park.image2}`);
+    ///////////////////////////////////////////////////////////
 
     // Get the DOM elements that will display the details
     const detailPic = document.querySelector('.detail-pic');
@@ -132,7 +139,6 @@ function locateParkByName(parkName) {
     // filter LKF
     //const searchBucket = Array.from(document.querySelector('.park-cards').children)
     const searchBucket = Array.from(cardBucket2)
-    console.log(`Working with ${searchBucket.length} cards looking for ${parkName}`)
     searchBucket.forEach(card => {
         if (card.querySelector('.park-name').textContent === parkName) {
             foundCard = card;
