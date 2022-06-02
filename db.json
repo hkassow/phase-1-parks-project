@@ -1,0 +1,10 @@
+{
+    "parks": [
+        {
+            "id": 1,
+            "name": "Yellowstone National Park",
+            "dateVisited": "",
+            "comment": ""
+        }
+    ]
+}
