@@ -25,6 +25,12 @@ select {
   align-self: right;
 }
 
+label {
+  display: block;
+  margin-top: 4px;
+  margin-bottom: 1px;
+}
+
 #park-details {
   display: flex;
   justify-content: space-between;
@@ -68,6 +74,8 @@ select {
   height: 180px;
   width: 200px;
   border-radius: 8px;
+  border-style: groove;
+  resize: none;
 }
 
 .state {
