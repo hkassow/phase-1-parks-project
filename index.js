@@ -142,16 +142,19 @@ function locateParkByName(parkName) {
     return foundCard;
 }
 
-//const cardBucket = Array.from(document.querySelector('.park-cards').children)
+
 const cardBucket2 = document.querySelector('.park-cards').children
-function filterByState(stateCode) {
-    const cardBucket = Array.from(cardBucket2)
+function filterByState(stateCode, skip = false) {
+    const cardBucket = Array.from(cardBucket2)              
+    //prevent infinite looping from recurrsion 
+    if (skip === false) {
+        hideIf(filterSelect.value)
+    }
     cardBucket.forEach(card => {
-        //hides all displays that don't include the state code                
+        //hides all displays that don't include the state code
+        //        
         if (!card.children[0].children[1].textContent.includes(stateCode)) {
             card.style.display = "none"
-        } else {
-            card.style.display = ''
         }
     })
 }
@@ -196,4 +199,6 @@ function hideIf(para) {
             })
             break;
     }
+    //runs filterByState to refilter incase hideIf reverted changes.
+    filterByState(document.querySelector('#statecode').value, true)
 }
