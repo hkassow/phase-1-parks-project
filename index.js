@@ -1,5 +1,5 @@
 const parkListUrl = `https://developer.nps.gov/api/v1/parks?limit=500&api_key=${NPS_api_key}`;
-const parkVistUrl = 'http://localhost:3000/parks';
+const parkVisitUrl = 'http://localhost:3000/parks';
 
 loadParkData();
 setupVisitForm();
@@ -60,7 +60,7 @@ function loadParkData() {
 
 
             // retrieve any visit details from our local server
-            fetch(parkVistUrl)
+            fetch(parkVisitUrl)
                 .then(response => response.json())
                 .then(data => {
                     // for each visit logged in our database
@@ -259,4 +259,36 @@ function hideIf(para) {
 }
 
 // Fetch (GET) park visit entries
-
+//project function hunter
+async function getJSONPark(){
+    return await (fetch(parkVisitUrl)
+    .then(data => data.json())
+    .then(parks => {return parks}))
+}
+async function checkParks(parkName){
+    //will return id if park exists in server already
+    //will return false otherwise
+    const jsonPark = await getJSONPark()
+    let x
+    x = Array.from(jsonPark).find(park => park.name === parkName)
+    console.log(x)
+    if (x === undefined) {
+        return false
+    }
+    return x.id
+}
+function storeParkComments(park){
+    const parkData = {
+        method: "Post",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+        body: JSON.stringify({
+            name: park.name,
+            dateVisited: park.dateVisited,
+            comment: park.comment
+        }),
+    }
+    fetch(parkVisitUrl, parkData)
+}
