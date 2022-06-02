@@ -11,6 +11,12 @@
       "dateVisited": "2022-04-01",
       "comment": "this database element was made using post through submit form",
       "id": 2
+    },
+    {
+      "name": "Acadia National Park",
+      "dateVisited": "2022-03-29",
+      "comment": "cold cold cold",
+      "id": 3
     }
   ]
 }
