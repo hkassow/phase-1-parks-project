@@ -56,11 +56,6 @@ function loadParkData() {
                 }
             })
             // More work after parks are loaded
-
-            allParks.forEach(park => createCard(park))
-            displayParkDetails(allParks[0]);
-
-
             // retrieve any visit details from our local server
             fetch(parkVisitUrl)
                 .then(response => response.json())
@@ -142,6 +137,7 @@ function showSlides(n) {
 let detailPark; // this is the park currently displayed in the detail area
 
 function createCard(park) {
+    
     const cardContainer = document.querySelector('.park-cards')
     let parkCard = document.createElement('div')
     parkCard.className = 'card'
