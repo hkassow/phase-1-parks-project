@@ -26,7 +26,7 @@ function setupVisitForm() {
         button.textContent = detailPark.visited ? 'Visited' : 'Not Visited';
         console.log(`I see a submit.  parkName is ${parkName}. Visited on ${detailPark.visitDate}. parkCard${parkCard ? '' : ' not'} located.  Will be saving data to db.json`);
 
-        storeParkComments(parkName, detailPark.visited, detailPark.comment)
+        storeParkComments(parkName, detailPark.visitDate, detailPark.comment)
     })
 }
 
