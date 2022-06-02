@@ -24,7 +24,7 @@ function setupVisitForm() {
         const parkCard = locateParkByName(parkName);
         const button = parkCard.querySelector('.favorite-button');
         button.textContent = detailPark.visited ? 'Visited' : 'Not Visited';
-        console.log(`I see a submit.  parkName is ${parkName}. parkCard${parkCard ? '' : ' not'} located.  Will be saving data to db.json`);
+        console.log(`I see a submit.  parkName is ${parkName}. Visited on ${detailPark.visitDate}. parkCard${parkCard ? '' : ' not'} located.  Will be saving data to db.json`);
     })
 }
 
@@ -61,25 +61,24 @@ function loadParkData() {
                 .then(data => {
                     // for each visit logged in our database
                     // locate the park and update with the visit info
-                    data.forEach(visit => {
-                        //console.log(visit);
+                    data.forEach(visit => {        
                         // filter by park name
-                        const foundPark = allParks.filter(park => park.name ===visit.name);
-                        if (foundPark) {
-                            foundPark.visitDate = visit.dateVisited;
-                            foundPark.visited  = !!visit.dateVisited; // will be true/false depending if date was set   
-                            foundPark.comment = visit.comment;
-                            foundPark.id = visit.id;
-                            console.log(`Found record of visit to ${visit.name}`)  
+                        const foundPark = allParks.filter(park => park.name === visit.name);                        
+                        if (foundPark.length > 0) {                            
+                            foundPark[0].visitDate = visit.dateVisited;
+                            foundPark[0].visited = !!visit.dateVisited; // will be true/false depending if date was set   
+                            foundPark[0].comment = visit.comment;
+                            foundPark[0].id = visit.id;                            
                         }
                     })
+                    allParks.forEach(park => createCard(park))
+                    displayParkDetails(allParks[0]);
                 })
                 .catch(error => {
                     alert(`Error occurred: ${error}.\nMake sure you are running json-server --watch db.json`)
                 })
 
-            allParks.forEach(park => createCard(park))
-            displayParkDetails(allParks[0]);
+
         })
 
         .catch(error => alert(`Failed to load parks: ${error.message}`))
