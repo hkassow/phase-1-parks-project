@@ -49,7 +49,7 @@ function loadParkData() {
                 }
             })
             // More work after parks are loaded
-            allParks.forEach(park => createPark(park))
+            allParks.forEach(park => createCard(park))
             console.log(`All parks inside .then: ${allParks.length}`);
             displayParkDetails(allParks[0]);
 
@@ -59,9 +59,9 @@ function loadParkData() {
         .catch(error => alert(`Failed to load parks: ${error.message}`))
 }
 
-function displayParkDetails(card) {
+function displayParkDetails(park) {
     // Get the park details
-    detailPark = card;
+    detailPark = park;
 
     // Get the DOM elements that will display the details
     const detailPic = document.querySelector('.detail-pic');
@@ -71,90 +71,87 @@ function displayParkDetails(card) {
     const detailVisitDate = document.querySelector('#fdate');
     const detailVisitNotes = document.querySelector('#fnotes');
 
-    detailPic.src = card.image;
-    detailPic.alt = card.name;
-    detailParkName.textContent = card.name;
-    detailParkState.textContent = card.states;
-    detailParkDesc.textContent = card.description;
+    detailPic.src = park.image;
+    detailPic.alt = park.name;
+    detailParkName.textContent = park.name;
+    detailParkState.textContent = park.states;
+    detailParkDesc.textContent = park.description;
 
-    detailVisitDate.value = card.visitDate;
-    detailVisitNotes.value = card.comment;
+    detailVisitDate.value = park.visitDate;
+    detailVisitNotes.value = park.comment;
 }
 
 let detailPark; // this is the park currently displayed in the detail area
-let parkContainer = document.querySelector('.park-cards')
-function createPark(card) {
 
-    let park = document.createElement('div')
-    park.className = 'card'
+function createCard(park) {
+    const cardContainer = document.querySelector('.park-cards')
+    let parkCard = document.createElement('div')
+    parkCard.className = 'card'
 
     let titleButton = document.createElement('div')
     titleButton.className = 'title-button'
 
     let parkTitle = document.createElement('h2')
     parkTitle.className = 'park-name'
-    parkTitle.textContent = card.name
+    parkTitle.textContent = park.name
     let state = document.createElement('h4')
-    state.textContent = card.states
+    state.textContent = park.states
     state.className = 'state'
     let btn = document.createElement('button')
     btn.className = 'favorite-button'
-    btn.textContent = card.visited ? 'Visited' : 'Not Visited';
+    btn.textContent = park.visited ? 'Visited' : 'Not Visited';
     titleButton.appendChild(parkTitle)
     titleButton.appendChild(state)
     titleButton.appendChild(btn)
-    park.appendChild(titleButton)
+    parkCard.appendChild(titleButton)
 
     let selfie = document.createElement('img')
     selfie.className = 'pic'
-    selfie.src = card.image
-    park.appendChild(selfie)
+    selfie.src = park.image
+    parkCard.appendChild(selfie)
 
     let descript = document.createElement('p')
     descript.className = 'description'
-    descript.textContent = card.description.length > 100 ? card.description.substring(0, 97) + '...' : card.description.substring;
-    park.appendChild(descript)
+    descript.textContent = park.description.length > 100 ? park.description.substring(0, 97) + '...' : park.description.substring;
+    parkCard.appendChild(descript)
 
     // Watch for clicks on the card so it can be displayed in detail
-    park.addEventListener('click', (e) => {
+    parkCard.addEventListener('click', (e) => {
         // Park clicked, so display this park's details
-        displayParkDetails(card);
+        displayParkDetails(park);
     })
-    parkContainer.appendChild(park)
+    cardContainer.appendChild(parkCard)
 }
 
-function grabParks() {
-    //converts html collection to array using spread operator
-    const x = [...document.getElementsByClassName('card')]
-    return x
-}
+
 
 // Locate and return the park's card from the full list
 function locateParkByName(parkName) {
-    const parkList = grabParks()
-    let foundPark;
-    parkList.forEach(park => {
-        if (park.querySelector('.park-name')) {
-            if (park.querySelector('.park-name').textContent === parkName) {
-                foundPark = park;
-            }
-
+  
+    let foundCard;
+    // filter LKF
+    //const searchBucket = Array.from(document.querySelector('.park-cards').children)
+    const searchBucket = Array.from(cardBucket2)
+    console.log(`Working with ${searchBucket.length} cards looking for ${parkName}`)
+    searchBucket.forEach(card => {
+        if (card.querySelector('.park-name').textContent === parkName) {
+            foundCard = card;
+            
         }
     })
-    return foundPark;
+    return foundCard;
 }
 
-const parkBucket = document.querySelector('.park-cards').children
+//const cardBucket = Array.from(document.querySelector('.park-cards').children)
+const cardBucket2 = document.querySelector('.park-cards').children
 function filterByState(stateCode) {
-
-    Array.from(parkBucket).forEach(park => {
-        //hides all displays that don't include the state code
-        //
-        console.log(park.children[0].children[1].innerHTML)
-        if (!park.children[0].children[1].textContent.includes(stateCode)) {
-            park.style.display = "none"
+    const cardBucket = Array.from(cardBucket2)
+    cardBucket.forEach(card => {
+        //hides all displays that don't include the state code                
+        if (!card.children[0].children[1].textContent.includes(stateCode)) {
+            card.style.display = "none"
         } else {
-            park.style.display = ''
+            card.style.display = ''
         }
     })
 }
@@ -173,27 +170,28 @@ function hideIf(para) {
     //filter-visited will show visited parks
     //filter-not-visited will show unvisited parks
     //show-all will display all parks again 
+    const cardBucket = Array.from(cardBucket2)
     switch (para) {
         case 'show-all':
-            Array.from(parkBucket).forEach(park => {
-                park.style.display = ''
+            cardBucket.forEach(card => {
+                card.style.display = ''
             })
             break;
         case 'filter-visited':
-            Array.from(parkBucket).forEach(park => {
-                if (park.children[0].children[2].innerHTML === 'Visited') {
-                    park.style.display = ''
+            cardBucket.forEach(card => {
+                if (card.children[0].children[2].innerHTML === 'Visited') {
+                    card.style.display = ''
                 } else {
-                    park.style.display = 'none'
+                    card.style.display = 'none'
                 }
             })
             break;
         case 'filter-not-visited':
-            Array.from(parkBucket).forEach(park => {
-                if (park.children[0].children[2].innerHTML === 'Not Visited') {
-                    park.style.display = ""
+            cardBucket.forEach(card => {
+                if (card.children[0].children[2].innerHTML === 'Not Visited') {
+                    card.style.display = ""
                 } else {
-                    park.style.display = 'none'
+                    card.style.display = 'none'
                 }
             })
             break;
