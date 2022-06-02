@@ -4,11 +4,11 @@
       "id": 1,
       "name": "Yellowstone National Park",
       "dateVisited": "2022-04-13",
-      "comment": "A little chilly, but beautiful"
+      "comment": "A little chilly, but beautiful.\n\nsuch a large and gorgeous park :)"
     },
     {
       "name": "Abraham Lincoln Birthplace National Historical Park",
-      "comment": "this database element was made using post through submit formmmmmmmmmmmmmmmmmmmmmmmm",
+      "comment": "this text paragraph was added directly from the server as an example ",
       "dateVisited": "2022-04-01",
       "id": 2
     },
@@ -17,6 +17,66 @@
       "dateVisited": "2022-03-29",
       "comment": "cold cold cold",
       "id": 3
+    },
+    {
+      "name": "Death Valley National Park",
+      "dateVisited": "2022-06-29",
+      "comment": "hot hot hot",
+      "id": 4
+    },
+    {
+      "name": "Joshua Tree National Park",
+      "dateVisited": "2022-06-21",
+      "comment": "climb climb climb",
+      "id": 5
+    },
+    {
+      "name": "Yosemite National Park",
+      "dateVisited": "2022-06-16",
+      "comment": "best park best park best park",
+      "id": 6
+    },
+    {
+      "name": "Sequoia & Kings Canyon National Parks",
+      "dateVisited": "2022-06-22",
+      "comment": "park park park",
+      "id": 7
+    },
+    {
+      "name": "Redwood National and State Parks",
+      "dateVisited": "2022-06-21",
+      "comment": "tree tree tree tree",
+      "id": 8
+    },
+    {
+      "name": "Bryce Canyon National Park",
+      "dateVisited": "2022-06-13",
+      "comment": "utahhhhhhh",
+      "id": 9
+    },
+    {
+      "name": "Grand Teton National Park",
+      "dateVisited": "2022-06-14",
+      "comment": "beautiful",
+      "id": 10
+    },
+    {
+      "name": "Zion National Park",
+      "dateVisited": "2022-06-15",
+      "comment": "narrows hike top down is best hike in park",
+      "id": 11
+    },
+    {
+      "name": "Mount Rainier National Park",
+      "dateVisited": "2022-06-07",
+      "comment": "bring snow tires",
+      "id": 12
+    },
+    {
+      "name": "Ice Age National Scenic Trail",
+      "dateVisited": "2021-10-04",
+      "comment": "very long trail, beautiful depending on time of year Wisconsin <3",
+      "id": 13
     }
   ]
 }
