@@ -25,6 +25,8 @@ function setupVisitForm() {
         const button = parkCard.querySelector('.favorite-button');
         button.textContent = detailPark.visited ? 'Visited' : 'Not Visited';
         console.log(`I see a submit.  parkName is ${parkName}. Visited on ${detailPark.visitDate}. parkCard${parkCard ? '' : ' not'} located.  Will be saving data to db.json`);
+
+        storeParkComments(parkName, detailPark.visited, detailPark.comment)
     })
 }
 
@@ -277,7 +279,8 @@ async function checkParks(parkName){
     }
     return x.id
 }
-function storeParkComments(park){
+
+function storeParkComments(parkName, visitDate, parkComment){
     const parkData = {
         method: "Post",
         headers: {
@@ -285,9 +288,9 @@ function storeParkComments(park){
           "Accept": "application/json",
         },
         body: JSON.stringify({
-            name: park.name,
-            dateVisited: park.dateVisited,
-            comment: park.comment
+            name: parkName,
+            dateVisited: visitDate,
+            comment: parkComment
         }),
     }
     fetch(parkVisitUrl, parkData)

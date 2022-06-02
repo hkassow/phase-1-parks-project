@@ -1,10 +1,16 @@
 {
-    "parks": [
-        {
-            "id": 1,
-            "name": "Yellowstone National Park",
-            "dateVisited": "2022-04-13",
-            "comment": "A little chilly, but beautiful"
-        }
-    ]
+  "parks": [
+    {
+      "id": 1,
+      "name": "Yellowstone National Park",
+      "dateVisited": "2022-04-13",
+      "comment": "A little chilly, but beautiful"
+    },
+    {
+      "name": "Abraham Lincoln Birthplace National Historical Park",
+      "dateVisited": true,
+      "comment": "this database element was made using post through submit form",
+      "id": 2
+    }
+  ]
 }
