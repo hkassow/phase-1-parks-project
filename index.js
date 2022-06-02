@@ -279,7 +279,6 @@ async function checkParks(parkName){
     }
     return x.id
 }
-
 function storeParkComments(parkName, visitDate, parkComment){
     const parkData = {
         method: "Post",
