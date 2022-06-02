@@ -275,18 +275,30 @@ async function checkParks(parkName){
     }
     return x.id
 }
-function storeParkComments(parkName, visitDate, parkComment){
-    const parkData = {
-        method: "Post",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
-        body: JSON.stringify({
-            name: parkName,
-            dateVisited: visitDate,
-            comment: parkComment
-        }),
+async function storeParkComments(parkName, visitDate, parkComment){
+    const parkID = await checkParks(parkName)
+    if (parkID === false){
+        const parkData = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: parkName,
+                dateVisited: visitDate,
+                comment: parkComment
+            }),
+        }
+        fetch(parkVisitUrl, parkData)
+    } else {
+        fetch(`http://localhost:3000/parks/${parkID}`, {
+            method: "PATCH",
+            headers:{
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+                comment: parkComment
+            })
+        })
     }
-    fetch(parkVisitUrl, parkData)
 }
