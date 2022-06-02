@@ -1,4 +1,5 @@
 const parkListUrl = `https://developer.nps.gov/api/v1/parks?limit=500&api_key=${NPS_api_key}`;
+const parkVistUrl = 'http://localhost:3000/parks';
 
 loadParkData();
 setupVisitForm();
@@ -23,7 +24,7 @@ function setupVisitForm() {
         const parkCard = locateParkByName(parkName);
         const button = parkCard.querySelector('.favorite-button');
         button.textContent = detailPark.visited ? 'Visited' : 'Not Visited';
-        console.log(`I see a submit.  parkName is ${parkName}. parkCard${parkCard ? '' : ' not'} located.  Will be saving data to db.json`);
+        console.log(`I see a submit.  parkName is ${parkName}. Visited on ${detailPark.visitDate}. parkCard${parkCard ? '' : ' not'} located.  Will be saving data to db.json`);
     })
 }
 
@@ -38,7 +39,7 @@ function loadParkData() {
         .then(parks => {
 
             const allParks = parks.data.map((park) => {
-                
+
                 return {
                     name: park.fullName,
                     description: park.description, // if needed addslashes(park.description),
@@ -53,8 +54,31 @@ function loadParkData() {
                 }
             })
             // More work after parks are loaded
-            allParks.forEach(park => createCard(park))            
-            displayParkDetails(allParks[0]);
+
+            // retrieve any visit details from our local server
+            fetch(parkVistUrl)
+                .then(response => response.json())
+                .then(data => {
+                    // for each visit logged in our database
+                    // locate the park and update with the visit info
+                    data.forEach(visit => {        
+                        // filter by park name
+                        const foundPark = allParks.filter(park => park.name === visit.name);                        
+                        if (foundPark.length > 0) {                            
+                            foundPark[0].visitDate = visit.dateVisited;
+                            foundPark[0].visited = !!visit.dateVisited; // will be true/false depending if date was set   
+                            foundPark[0].comment = visit.comment;
+                            foundPark[0].id = visit.id;                            
+                        }
+                    })
+                    allParks.forEach(park => createCard(park))
+                    displayParkDetails(allParks[0]);
+                })
+                .catch(error => {
+                    alert(`Error occurred: ${error}.\nMake sure you are running json-server --watch db.json`)
+                })
+
+
         })
 
         .catch(error => alert(`Failed to load parks: ${error.message}`))
@@ -66,8 +90,8 @@ function displayParkDetails(park) {
 
     ///////////////////////////////////////////////////////////
     // This is the addtional data that could be added to the detail card
-    console.log(`Park weather is ${park.weather}`);
-    console.log(`Park additional image is ${park.image2}`);
+    //console.log(`Park weather is ${park.weather}`);
+    //console.log(`Park additional image is ${park.image2}`);
     ///////////////////////////////////////////////////////////
 
     // Get the DOM elements that will display the details
@@ -134,7 +158,7 @@ function createCard(park) {
 
 // Locate and return the park's card from the full list
 function locateParkByName(parkName) {
-  
+
     let foundCard;
     // filter LKF
     //const searchBucket = Array.from(document.querySelector('.park-cards').children)
@@ -142,7 +166,7 @@ function locateParkByName(parkName) {
     searchBucket.forEach(card => {
         if (card.querySelector('.park-name').textContent === parkName) {
             foundCard = card;
-            
+
         }
     })
     return foundCard;
@@ -151,7 +175,7 @@ function locateParkByName(parkName) {
 
 const cardBucket2 = document.querySelector('.park-cards').children
 function filterByState(stateCode, skip = false) {
-    const cardBucket = Array.from(cardBucket2)              
+    const cardBucket = Array.from(cardBucket2)
     //prevent infinite looping from recurrsion 
     if (skip === false) {
         hideIf(filterSelect.value)
@@ -208,3 +232,6 @@ function hideIf(para) {
     //runs filterByState to refilter incase hideIf reverted changes.
     filterByState(document.querySelector('#statecode').value, true)
 }
+
+// Fetch (GET) park visit entries
+
