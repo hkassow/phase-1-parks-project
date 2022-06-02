@@ -8,7 +8,7 @@
     },
     {
       "name": "Abraham Lincoln Birthplace National Historical Park",
-      "comment": "this text paragraph was added directly from the server as an example ",
+      "comment": "he never lied!",
       "dateVisited": "2022-04-01",
       "id": 2
     },
@@ -77,6 +77,24 @@
       "dateVisited": "2021-10-04",
       "comment": "very long trail, beautiful depending on time of year Wisconsin <3",
       "id": 13
+    },
+    {
+      "name": "Adams National Historical Park",
+      "dateVisited": "2022-06-15",
+      "comment": "heyheyhey",
+      "id": 14
+    },
+    {
+      "name": "African American Civil War Memorial",
+      "dateVisited": "2022-06-24",
+      "comment": "it was fine",
+      "id": 15
+    },
+    {
+      "name": "African Burial Ground National Monument",
+      "dateVisited": "2022-07-15",
+      "comment": "amazing!",
+      "id": 16
     }
   ]
 }

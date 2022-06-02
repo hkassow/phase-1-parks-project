@@ -1,6 +1,6 @@
 body {
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  background-color: #D5EEBB;
+  background-color:navajowhite;
   margin: 2rem;
 }
 
@@ -15,6 +15,7 @@ nav div {
 
 h1 {
   font-size: 48px;
+  margin-top: 15px;
 }
 
 h4 {
@@ -34,12 +35,12 @@ label {
 #park-details {
   display: flex;
   justify-content: space-between;
-  background-color: #ACDEAA;
+  background-color:blanchedalmond;
   padding: 5px;
   max-width: fit-content;
   height: fit-content;
   border-radius: 16px;
-  border: 3px solid #444941;
+  border: 3px outset burlywood;
 }
 
 .park-name-state-desc {
@@ -78,22 +79,28 @@ label {
   word-wrap: break-word;
 }
 
+.filter-bar {
+  display: flex;
+  align-content: center;
+  padding-top: 5px;
+}
+
 .park-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   column-gap: 75px;
   row-gap: 50px;
   justify-content: space-evenly;
-  padding-top: 35px;
+  padding-top: 10px;
 }
 
 .card {
-  background-color: #ACDEAA;
+  background-color:blanchedalmond;
   padding: 5px;
   max-width: fit-content;
   height: fit-content;
   border-radius: 16px;
-  border: 3px solid #444941;
+  border: 3px outset burlywood;
 }
 
 .description {
@@ -108,7 +115,6 @@ button {
 .title-button {
   display: flex;
   justify-content: space-between;
-
 }
 
 .pic {
@@ -116,8 +122,8 @@ button {
   height: 400px;
   border-radius: 16px;
 }
-
-* {box-sizing:border-box}
+/*
+* {box-sizing:border-box} */
 
 /* Slideshow container */
 .slideshow-container {

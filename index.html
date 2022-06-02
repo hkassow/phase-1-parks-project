@@ -45,26 +45,33 @@
         <h2 id="detailParkName" class="detail-park-name">Abraham Lincoln Birthplace National Historical Park</h2>
         <h4 class="detail-state">KY</h4>
         <p class="detail-description">For over a century people from around the world have come to rural Central Kentucky to honor the humble beginnings of our 16th president, Abraham Lincoln. His early life on Kentucky's frontier shaped his character and prepared him to lead the nation through Civil War. The country's first memorial to Lincoln, built with donations from young and old, enshrines the symbolic birthplace cabin.</p>
+        <div class="visit-info">
+          <h4 class="visited-on">Not visited yet!</h4>
+          <p class="visit-notes"></p>
+        </div>
       </div>
       <form action="" id="form">
         <label for="">Date Visited</label><br>
-        <input type="date" name="visit-date" class="fdate" id="fdate"><br>
+        <input type="date" name="visit-date" class="fdate" id="fdate" value="2022-06-02" min="1997-04-04" max="2122-04-04" ><br>
         <label for="">How was your visit?</label><br>
         <!-- <input type="text" name="visit-notes" class="fnotes" id="fnotes"> -->
         <textarea name="visit-notes" class="fnotes" id="fnotes" cols="30" rows="10"></textarea>
-        <input type="submit" value="Save">
+        <input type="submit" value="Save" onclick="showDiv()">
       </form>
     </div>
   </div>
+  <div class="filter-bar">
+    <label for="statecode">Filter</label>
   <select name="filter" class="filter-select">
     <option value="show-all">Show All</option>
     <option value="filter-visited">Show Visited</option>
     <option value="filter-not-visited">Show Unvisited</option>
   </select>
+  <label for="statecode">Filter by state</label>
   <form id="state-filter-form">
-    <label for="statecode">Show by state</label>
     <input type="text" id="statecode" name="statecode">
   </form>
+  </div>
   <div class="park-cards">
 
   </div>
