@@ -17,7 +17,7 @@ function setupVisitForm() {
         // Save the date and note entered by the user in the park card
         detailPark.visitDate = e.target.fdate.value;
         detailPark.comment = e.target.fnotes.value;
-        detailPark.visited = !!detailPark.visitDate; // will be true/false depending if date was set        
+        detailPark.visited = !!detailPark.visitDate; // will be true/false depending if date was set
 
         const parkName = e.target.parentElement.querySelector('#detailParkName').textContent
         const parkCard = locateParkByName(parkName);
@@ -38,7 +38,7 @@ function loadParkData() {
         .then(parks => {
 
             const allParks = parks.data.map((park) => {
-                
+
                 return {
                     name: park.fullName,
                     description: park.description, // if needed addslashes(park.description),
@@ -53,7 +53,7 @@ function loadParkData() {
                 }
             })
             // More work after parks are loaded
-            allParks.forEach(park => createCard(park))            
+            allParks.forEach(park => createCard(park))
             displayParkDetails(allParks[0]);
         })
 
@@ -61,7 +61,7 @@ function loadParkData() {
 }
 
 function displayParkDetails(park) {
-    // Get the park details    
+    // Get the park details
     detailPark = park;
 
     ///////////////////////////////////////////////////////////
@@ -72,6 +72,7 @@ function displayParkDetails(park) {
 
     // Get the DOM elements that will display the details
     const detailPic = document.querySelector('.detail-pic');
+    const detailPic2 = document.querySelector('#detail-pic2');
     const detailParkName = document.querySelector('.detail-park-name');
     const detailParkState = document.querySelector('.detail-state');
     const detailParkDesc = document.querySelector('.detail-description');
@@ -80,12 +81,32 @@ function displayParkDetails(park) {
 
     detailPic.src = park.image;
     detailPic.alt = park.name;
+    detailPic2.src = park.image2;
+    detailPic2.alt = park.name;
     detailParkName.textContent = park.name;
     detailParkState.textContent = park.states;
     detailParkDesc.textContent = park.description;
 
     detailVisitDate.value = park.visitDate;
     detailVisitNotes.value = park.comment;
+}
+
+let slideIndex = 1; //slideshow functionality for detailPark
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function showSlides(n) {
+  let i;
+  let slides = document.getElementsByClassName("detail-pic-div");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+  slides[slideIndex-1].style.display = "block";
 }
 
 let detailPark; // this is the park currently displayed in the detail area
@@ -134,7 +155,7 @@ function createCard(park) {
 
 // Locate and return the park's card from the full list
 function locateParkByName(parkName) {
-  
+
     let foundCard;
     // filter LKF
     //const searchBucket = Array.from(document.querySelector('.park-cards').children)
@@ -142,7 +163,7 @@ function locateParkByName(parkName) {
     searchBucket.forEach(card => {
         if (card.querySelector('.park-name').textContent === parkName) {
             foundCard = card;
-            
+
         }
     })
     return foundCard;
@@ -151,14 +172,14 @@ function locateParkByName(parkName) {
 
 const cardBucket2 = document.querySelector('.park-cards').children
 function filterByState(stateCode, skip = false) {
-    const cardBucket = Array.from(cardBucket2)              
-    //prevent infinite looping from recurrsion 
+    const cardBucket = Array.from(cardBucket2)
+    //prevent infinite looping from recurrsion
     if (skip === false) {
         hideIf(filterSelect.value)
     }
     cardBucket.forEach(card => {
         //hides all displays that don't include the state code
-        //        
+        //
         if (!card.children[0].children[1].textContent.includes(stateCode)) {
             card.style.display = "none"
         }
@@ -178,7 +199,7 @@ filterSelect.addEventListener('change', e => {
 function hideIf(para) {
     //filter-visited will show visited parks
     //filter-not-visited will show unvisited parks
-    //show-all will display all parks again 
+    //show-all will display all parks again
     const cardBucket = Array.from(cardBucket2)
     switch (para) {
         case 'show-all':
