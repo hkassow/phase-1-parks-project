@@ -24,7 +24,7 @@ function setupVisitForm() {
         const parkCard = locateParkByName(parkName);
         const button = parkCard.querySelector('.visit-button');
         button.textContent = detailPark.visited ? 'Visited' : 'Not Visited';
-        console.log(`I see a submit.  parkName is ${parkName}. Visited on ${detailPark.visitDate}. parkCard${parkCard ? '' : ' not'} located.  Will be saving data to db.json`);
+        //console.log(`I see a submit.  parkName is ${parkName}. Visited on ${detailPark.visitDate}. parkCard${parkCard ? '' : ' not'} located.  Will be saving data to db.json`);
 
         storeParkComments(parkName, detailPark.visitDate, detailPark.comment)
     })
@@ -122,7 +122,7 @@ let slideIndex = 1; //slideshow functionality for detailPark
 showSlides(slideIndex);
 
 function plusSlides(n) {
-  showSlides(slideIndex += n);
+    showSlides(slideIndex += n);
 }
 
 function showSlides(n) {
@@ -183,18 +183,14 @@ function createCard(park) {
 
 // Locate and return the park's card from the full list
 function locateParkByName(parkName) {
-
-    let foundCard;
-    // filter LKF
-    //const searchBucket = Array.from(document.querySelector('.park-cards').children)
     const searchBucket = Array.from(cardBucket2)
-    searchBucket.forEach(card => {
-        if (card.querySelector('.park-name').textContent === parkName) {
-            foundCard = card;
-
-        }
-    })
-    return foundCard;
+    const foundCard = searchBucket.filter(card => card.querySelector('.park-name').textContent === parkName);
+    
+    if (foundCard.length === 1) {        
+        return foundCard[0];
+    } else {
+        return foundCard;
+    }
 }
 
 
@@ -260,26 +256,26 @@ function hideIf(para) {
 
 // Fetch (GET) park visit entries
 //project function hunter
-async function getJSONPark(){
+async function getJSONPark() {
     return await (fetch(parkVisitUrl)
-    .then(data => data.json())
-    .then(parks => {return parks}))
+        .then(data => data.json())
+        .then(parks => { return parks }))
 }
-async function checkParks(parkName){
+async function checkParks(parkName) {
     //will return id if park exists in server already
     //will return false otherwise
     const jsonPark = await getJSONPark()
     let x
     x = Array.from(jsonPark).find(park => park.name === parkName)
-    console.log(x)
+    
     if (x === undefined) {
         return false
     }
     return x.id
 }
-async function storeParkComments(parkName, visitDate, parkComment){
+async function storeParkComments(parkName, visitDate, parkComment) {
     const parkID = await checkParks(parkName)
-    if (parkID === false){
+    if (parkID === false) {
         const parkData = {
             method: "POST",
             headers: {
@@ -295,7 +291,7 @@ async function storeParkComments(parkName, visitDate, parkComment){
     } else {
         fetch(`http://localhost:3000/parks/${parkID}`, {
             method: "PATCH",
-            headers:{
+            headers: {
                 "Content-type": "application/json",
             },
             body: JSON.stringify({
