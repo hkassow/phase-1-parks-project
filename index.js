@@ -24,11 +24,12 @@ function setupVisitForm() {
         const parkCard = locateParkByName(parkName);
         const button = parkCard.querySelector('.visit-button');
         button.textContent = detailPark.visited ? 'Visited' : 'Not Visited';
-        //console.log(`I see a submit.  parkName is ${parkName}. Visited on ${detailPark.visitDate}. parkCard${parkCard ? '' : ' not'} located.  Will be saving data to db.json`);
-
+        
         storeParkComments(parkName, detailPark.visitDate, detailPark.comment)
         const detailVisitNotes = document.querySelector('.visit-notes');
         detailVisitNotes.textContent = detailPark.comment
+        const detailVisitedDate = document.querySelector('.visited-on');        
+        detailVisitedDate.textContent = detailPark.visitDate === "" ? 'Not visited yet!' : `Visited on ${detailPark.visitDate}`;
         e.target.fnotes.value = ''
 
     })
@@ -299,7 +300,8 @@ async function storeParkComments(parkName, visitDate, parkComment) {
                 "Content-type": "application/json",
             },
             body: JSON.stringify({
-                comment: parkComment
+                comment: parkComment,
+                dateVisited: visitDate
             })
         })
     }
