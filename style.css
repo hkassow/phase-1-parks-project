@@ -24,12 +24,14 @@ h4 {
 
 select {
   align-self: right;
+  margin-right: 6px;
 }
 
 label {
   display: block;
   margin-top: 4px;
   margin-bottom: 1px;
+  margin-right: 3px
 }
 
 #park-details {
@@ -168,10 +170,10 @@ button {
 /* Fading animation */
 .fade {
   animation-name: fade;
-  animation-duration: .5s;
+  animation-duration: 1s;
 }
 
 @keyframes fade {
-  from {opacity: .7}
+  from {opacity: .6}
   to {opacity: 1}
 }
