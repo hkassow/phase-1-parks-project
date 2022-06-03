@@ -114,7 +114,7 @@ function displayParkDetails(park) {
     detailParkState.textContent = park.states;
     detailParkDesc.textContent = park.description;
 
-    detailVisitDate.textContent = `Visited on ${park.visitDate}`;
+    detailVisitDate.textContent = park.visitDate === "" ? 'Not visited yet!' : `Visited on ${park.visitDate}`;
     detailVisitNotes.textContent = park.comment;
 }
 
