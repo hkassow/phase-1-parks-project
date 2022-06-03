@@ -1,15 +1,43 @@
 const parkListUrl = `https://developer.nps.gov/api/v1/parks?limit=500&api_key=${NPS_api_key}`;
 const parkVisitUrl = 'http://localhost:3000/parks';
+let detailPark; // this is the park currently displayed in the detail area
 
 loadParkData();
 setupVisitForm();
 
-// Add slashes to quotes within strings to avoid trouble
-// source: https://stackoverflow.com/questions/770523/escaping-strings-in-javascript
-function addslashes(str) {
-    return (str + '').replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
+
+
+
+/*
+ * Park Detail Display
+ */
+function displayParkDetails(park) {
+    // Get the park details
+    detailPark = park;
+
+    // Get the DOM elements that will display the details
+    const detailPic = document.querySelector('.detail-pic');
+    const detailPic2 = document.querySelector('#detail-pic2');
+    const detailParkName = document.querySelector('.detail-park-name');
+    const detailParkState = document.querySelector('.detail-state');
+    const detailParkDesc = document.querySelector('.detail-description');
+    const detailVisitDate = document.querySelector('.visited-on');
+    const detailVisitNotes = document.querySelector('.visit-notes');
+    const visitInfoDisplay = document.querySelector('.visit-info')
+
+    detailPic.src = park.image;
+    detailPic.alt = park.name;
+    detailPic2.src = park.image2;
+    detailPic2.alt = park.name;
+    detailParkName.textContent = park.name;
+    detailParkState.textContent = park.states;
+    detailParkDesc.textContent = park.description;
+
+    detailVisitDate.textContent = park.visitDate === "" ? 'Not visited yet!' : `Visited on ${park.visitDate}`;
+    detailVisitNotes.textContent = park.comment;
 }
 
+// Configure form on detail display used to enter visit date/comment
 function setupVisitForm() {
     // take action when [submit] selected on form
     const visitForm = document.querySelector('#form');
@@ -24,106 +52,19 @@ function setupVisitForm() {
         const parkCard = locateParkByName(parkName);
         const button = parkCard.querySelector('.visit-button');
         button.textContent = detailPark.visited ? 'Visited' : 'Not Visited';
-        
+
         storeParkComments(parkName, detailPark.visitDate, detailPark.comment)
         const detailVisitNotes = document.querySelector('.visit-notes');
         detailVisitNotes.textContent = detailPark.comment
-        const detailVisitedDate = document.querySelector('.visited-on');        
+        const detailVisitedDate = document.querySelector('.visited-on');
         detailVisitedDate.textContent = detailPark.visitDate === "" ? 'Not visited yet!' : `Visited on ${detailPark.visitDate}`;
         e.target.fnotes.value = ''
 
     })
 }
 
-// Retrieve parks data from National Park Service API
-// Map data to retain only the fields we care about, and add the following:
-// - comment    => user entered comment about the park
-// - visitDate  => user entered date of visit
-// - visited    => flag to indicate whether user has visited this park
-function loadParkData() {
-    fetch(parkListUrl)
-        .then(response => response.json())
-        .then(parks => {
-
-            const allParks = parks.data.map((park) => {
-
-                return {
-                    name: park.fullName,
-                    description: park.description, // if needed addslashes(park.description),
-                    states: park.states,
-                    image: park.images.length > 0 ? park.images[0].url : '',
-                    image2: park.images.length > 1 ? park.images[1].url : '',
-                    weather: park.weatherInfo,
-                    comment: '',
-                    visitDate: '',
-                    visited: false,
-                    id: ''
-                }
-            })
-            // More work after parks are loaded
-            // retrieve any visit details from our local server
-            fetch(parkVisitUrl)
-                .then(response => response.json())
-                .then(data => {
-                    // for each visit logged in our database
-                    // locate the park and update with the visit info
-                    data.forEach(visit => {
-                        // filter by park name
-                        const foundPark = allParks.filter(park => park.name === visit.name);
-                        if (foundPark.length > 0) {
-                            foundPark[0].visitDate = visit.dateVisited;
-                            foundPark[0].visited = !!visit.dateVisited; // will be true/false depending if date was set
-                            foundPark[0].comment = visit.comment;
-                            foundPark[0].id = visit.id;
-                        }
-                    })
-                    allParks.forEach(park => createCard(park))
-                    displayParkDetails(allParks[0]);
-                })
-                .catch(error => {
-                    alert(`Error occurred: ${error}.\nMake sure you are running json-server --watch db.json`)
-                })
-
-
-        })
-
-        .catch(error => alert(`Failed to load parks: ${error.message}`))
-}
-
-function displayParkDetails(park) {
-    // Get the park details
-    detailPark = park;
-
-    ///////////////////////////////////////////////////////////
-    // This is the addtional data that could be added to the detail card
-    //console.log(`Park weather is ${park.weather}`);
-    //console.log(`Park additional image is ${park.image2}`);
-    ///////////////////////////////////////////////////////////
-
-    // Get the DOM elements that will display the details
-    const detailPic = document.querySelector('.detail-pic');
-    const detailPic2 = document.querySelector('#detail-pic2');
-    const detailParkName = document.querySelector('.detail-park-name');
-    const detailParkState = document.querySelector('.detail-state');
-    const detailParkDesc = document.querySelector('.detail-description');
-    const detailVisitDate = document.querySelector('.visited-on');
-    const detailVisitNotes = document.querySelector('.visit-notes');
-    const visitInfoDisplay = document.querySelector('.visit-info')
-    // const detailVisitDate = document.querySelector('#fdate');
-    // const detailVisitNotes = document.querySelector('#fnotes');
-    detailPic.src = park.image;
-    detailPic.alt = park.name;
-    detailPic2.src = park.image2;
-    detailPic2.alt = park.name;
-    detailParkName.textContent = park.name;
-    detailParkState.textContent = park.states;
-    detailParkDesc.textContent = park.description;
-
-    detailVisitDate.textContent = park.visitDate === "" ? 'Not visited yet!' : `Visited on ${park.visitDate}`;
-    detailVisitNotes.textContent = park.comment;
-}
-
-let slideIndex = 1; //slideshow functionality for detailPark
+//slideshow functionality for detailPark
+let slideIndex = 1; 
 showSlides(slideIndex);
 
 function plusSlides(n) {
@@ -131,18 +72,21 @@ function plusSlides(n) {
 }
 
 function showSlides(n) {
-  let i;
-  let slides = document.getElementsByClassName('detail-pic-div');
-  if (n > slides.length) {slideIndex = 1}
-  if (n < 1) {slideIndex = slides.length}
-  for (i = 0; i < slides.length; i++) {
-    slides[i].style.display = 'none';
-  }
-  slides[slideIndex-1].style.display = 'block';
+    let i;
+    let slides = document.getElementsByClassName('detail-pic-div');
+    if (n > slides.length) { slideIndex = 1 }
+    if (n < 1) { slideIndex = slides.length }
+    for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = 'none';
+    }
+    slides[slideIndex - 1].style.display = 'block';
 }
 
-let detailPark; // this is the park currently displayed in the detail area
 
+
+/*
+ * Park Display Setup
+ */
 function createCard(park) {
 
     const cardContainer = document.querySelector('.park-cards')
@@ -184,21 +128,21 @@ function createCard(park) {
     cardContainer.appendChild(parkCard)
 }
 
-
-
 // Locate and return the park's card from the full list
 function locateParkByName(parkName) {
     const searchBucket = Array.from(cardBucket2)
     const foundCard = searchBucket.filter(card => card.querySelector('.park-name').textContent === parkName);
-    
-    if (foundCard.length === 1) {        
+
+    if (foundCard.length === 1) {
         return foundCard[0];
     } else {
         return foundCard;
     }
 }
 
-
+/*
+ * Filter Management
+ */
 const cardBucket2 = document.querySelector('.park-cards').children
 function filterByState(stateCode, skip = false) {
     const cardBucket = Array.from(cardBucket2)
@@ -259,6 +203,67 @@ function hideIf(para) {
     filterByState(document.querySelector('#statecode').value, true)
 }
 
+
+/*
+ * Park Data Management
+ */
+// Retrieve parks data from National Park Service API
+// Map data to retain only the fields we care about, and add the following:
+// - comment    => user entered comment about the park
+// - visitDate  => user entered date of visit
+// - visited    => flag to indicate whether user has visited this park
+// - id         => id used by json-server
+function loadParkData() {
+    fetch(parkListUrl)
+        .then(response => response.json())
+        .then(parks => {
+
+            const allParks = parks.data.map((park) => {
+
+                return {
+                    name: park.fullName,
+                    description: park.description, // if needed addslashes(park.description),
+                    states: park.states,
+                    image: park.images.length > 0 ? park.images[0].url : '',
+                    image2: park.images.length > 1 ? park.images[1].url : '',
+                    weather: park.weatherInfo,
+                    comment: '',
+                    visitDate: '',
+                    visited: false,
+                    id: ''
+                }
+            })
+            // More work after parks are loaded
+            // retrieve any visit details from our local server
+            fetch(parkVisitUrl)
+                .then(response => response.json())
+                .then(data => {
+                    // for each visit logged in our database
+                    // locate the park and update with the visit info
+                    data.forEach(visit => {
+                        // filter by park name
+                        const foundPark = allParks.filter(park => park.name === visit.name);
+                        if (foundPark.length > 0) {
+                            foundPark[0].visitDate = visit.dateVisited;
+                            foundPark[0].visited = !!visit.dateVisited; // will be true/false depending if date was set
+                            foundPark[0].comment = visit.comment;
+                            foundPark[0].id = visit.id;
+                        }
+                    })
+                    allParks.forEach(park => createCard(park))
+                    displayParkDetails(allParks[0]);
+                })
+                .catch(error => {
+                    alert(`Error occurred: ${error}.\nMake sure you are running json-server --watch db.json`)
+                })
+
+
+        })
+
+        .catch(error => alert(`Failed to load parks: ${error.message}`))
+}
+
+
 // Fetch (GET) park visit entries
 //grab all park data waits till promise is complete to send it 
 async function getJSONPark() {
@@ -272,7 +277,7 @@ async function checkParks(parkName) {
     const jsonPark = await getJSONPark()
     let x
     x = Array.from(jsonPark).find(park => park.name === parkName)
-    
+
     if (x === undefined) {
         return false
     }
