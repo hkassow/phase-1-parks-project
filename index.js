@@ -53,6 +53,7 @@ function setupVisitForm() {
         const button = parkCard.querySelector('.visit-button');
         button.textContent = detailPark.visited ? 'Visited' : 'Not Visited';
 
+        //sending data to server and updating the current display
         storeParkComments(parkName, detailPark.visitDate, detailPark.comment)
         const detailVisitNotes = document.querySelector('.visit-notes');
         detailVisitNotes.textContent = detailPark.comment
@@ -143,16 +144,20 @@ function locateParkByName(parkName) {
 /*
  * Filter Management
  */
+
+// cardBucket2 contains all cards 
 const cardBucket2 = document.querySelector('.park-cards').children
 function filterByState(stateCode, skip = false) {
     const cardBucket = Array.from(cardBucket2)
-    //prevent infinite looping from recurrsion
+    //if statement prevents infinite looping from callbacks 
+    //run the visited/not visited filter to reset any cards previously hidden
     if (skip === false) {
         hideIf(filterSelect.value)
     }
     cardBucket.forEach(card => {
         //hides all displays that don't include the state code
-        //
+        //note that it doesnt change display if the state is included
+        //thats what the previous if statement and callback function are for 
         if (!card.children[0].children[1].textContent.includes(stateCode)) {
             card.style.display = "none"
         }
@@ -162,6 +167,7 @@ const stateFilter = document.querySelector('#state-filter-form')
 stateFilter.addEventListener('submit', e => {
     e.preventDefault()
     const statecode = document.querySelector('#statecode').value
+    //running filterByState with default no-skip 
     filterByState(statecode)
 })
 const filterSelect = document.querySelector('select')
@@ -200,6 +206,7 @@ function hideIf(para) {
             break;
     }
     //runs filterByState to refilter incase hideIf reverted changes.
+    //important that we pass any value thats not false into the 2nd parameter to prevent looping
     filterByState(document.querySelector('#statecode').value, true)
 }
 
@@ -265,15 +272,17 @@ function loadParkData() {
 
 
 // Fetch (GET) park visit entries
-//grab all park data waits till promise is complete to send it 
+//grab all park data in LOCAL SERVER; waits till promise is complete to send it 
 async function getJSONPark() {
     return await (fetch(parkVisitUrl)
         .then(data => data.json())
         .then(parks => { return parks }))
 }
+
+//will return id if park exists in server already
+//will return false otherwise
+//use function to check if patch request or post request is needed
 async function checkParks(parkName) {
-    //will return id if park exists in server already
-    //will return false otherwise
     const jsonPark = await getJSONPark()
     let x
     x = Array.from(jsonPark).find(park => park.name === parkName)
@@ -283,8 +292,11 @@ async function checkParks(parkName) {
     }
     return x.id
 }
+//sends patch or post request 
 async function storeParkComments(parkName, visitDate, parkComment) {
+    //use callback to get park id inside our local server
     const parkID = await checkParks(parkName)
+    //post
     if (parkID === false) {
         const parkData = {
             method: "POST",
@@ -297,8 +309,10 @@ async function storeParkComments(parkName, visitDate, parkComment) {
                 comment: parkComment
             }),
         }
+        // parkVisitUrl = 'http://localhost:3000/parks'
         fetch(parkVisitUrl, parkData)
     } else {
+        //patch
         fetch(`http://localhost:3000/parks/${parkID}`, {
             method: "PATCH",
             headers: {
