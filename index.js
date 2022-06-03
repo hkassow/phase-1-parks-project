@@ -22,7 +22,7 @@ function setupVisitForm() {
 
         const parkName = e.target.parentElement.querySelector('#detailParkName').textContent
         const parkCard = locateParkByName(parkName);
-        const button = parkCard.querySelector('.favorite-button');
+        const button = parkCard.querySelector('.visit-button');
         button.textContent = detailPark.visited ? 'Visited' : 'Not Visited';
         //console.log(`I see a submit.  parkName is ${parkName}. Visited on ${detailPark.visitDate}. parkCard${parkCard ? '' : ' not'} located.  Will be saving data to db.json`);
 
@@ -67,7 +67,7 @@ function loadParkData() {
                         const foundPark = allParks.filter(park => park.name === visit.name);
                         if (foundPark.length > 0) {
                             foundPark[0].visitDate = visit.dateVisited;
-                            foundPark[0].visited = !!visit.dateVisited; // will be true/false depending if date was set   
+                            foundPark[0].visited = !!visit.dateVisited; // will be true/false depending if date was set
                             foundPark[0].comment = visit.comment;
                             foundPark[0].id = visit.id;
                         }
@@ -101,9 +101,11 @@ function displayParkDetails(park) {
     const detailParkName = document.querySelector('.detail-park-name');
     const detailParkState = document.querySelector('.detail-state');
     const detailParkDesc = document.querySelector('.detail-description');
-    const detailVisitDate = document.querySelector('#fdate');
-    const detailVisitNotes = document.querySelector('#fnotes');
-
+    const detailVisitDate = document.querySelector('.visited-on');
+    const detailVisitNotes = document.querySelector('.visit-notes');
+    const visitInfoDisplay = document.querySelector('.visit-info')
+    // const detailVisitDate = document.querySelector('#fdate');
+    // const detailVisitNotes = document.querySelector('#fnotes');
     detailPic.src = park.image;
     detailPic.alt = park.name;
     detailPic2.src = park.image2;
@@ -112,8 +114,8 @@ function displayParkDetails(park) {
     detailParkState.textContent = park.states;
     detailParkDesc.textContent = park.description;
 
-    detailVisitDate.value = park.visitDate;
-    detailVisitNotes.value = park.comment;
+    detailVisitDate.textContent = park.visitDate === "" ? 'Not visited yet!' : `Visited on ${park.visitDate}`;
+    detailVisitNotes.textContent = park.comment;
 }
 
 let slideIndex = 1; //slideshow functionality for detailPark
@@ -124,14 +126,14 @@ function plusSlides(n) {
 }
 
 function showSlides(n) {
-    let i;
-    let slides = document.getElementsByClassName("detail-pic-div");
-    if (n > slides.length) { slideIndex = 1 }
-    if (n < 1) { slideIndex = slides.length }
-    for (i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none";
-    }
-    slides[slideIndex - 1].style.display = "block";
+  let i;
+  let slides = document.getElementsByClassName('detail-pic-div');
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = 'none';
+  }
+  slides[slideIndex-1].style.display = 'block';
 }
 
 let detailPark; // this is the park currently displayed in the detail area
@@ -152,7 +154,7 @@ function createCard(park) {
     state.textContent = park.states
     state.className = 'state'
     let btn = document.createElement('button')
-    btn.className = 'favorite-button'
+    btn.className = 'visit-button'
     btn.textContent = park.visited ? 'Visited' : 'Not Visited';
     titleButton.appendChild(parkTitle)
     titleButton.appendChild(state)
@@ -195,7 +197,7 @@ function locateParkByName(parkName) {
 const cardBucket2 = document.querySelector('.park-cards').children
 function filterByState(stateCode, skip = false) {
     const cardBucket = Array.from(cardBucket2)
-    //prevent infinite looping from recurrsion 
+    //prevent infinite looping from recurrsion
     if (skip === false) {
         hideIf(filterSelect.value)
     }
