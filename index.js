@@ -27,6 +27,10 @@ function setupVisitForm() {
         //console.log(`I see a submit.  parkName is ${parkName}. Visited on ${detailPark.visitDate}. parkCard${parkCard ? '' : ' not'} located.  Will be saving data to db.json`);
 
         storeParkComments(parkName, detailPark.visitDate, detailPark.comment)
+        const detailVisitNotes = document.querySelector('.visit-notes');
+        detailVisitNotes.textContent = detailPark.comment
+        e.target.fnotes.value = ''
+
     })
 }
 
@@ -255,7 +259,7 @@ function hideIf(para) {
 }
 
 // Fetch (GET) park visit entries
-//project function hunter
+//grab all park data waits till promise is complete to send it 
 async function getJSONPark() {
     return await (fetch(parkVisitUrl)
         .then(data => data.json())
